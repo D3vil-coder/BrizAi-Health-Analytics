@@ -15,7 +15,9 @@
 </div>
 
 ---
-
+![](UI1.png)
+![](UI3.png)
+![](UI2.png)
 ## ✨ Features
 
 ### 🤖 AI Personal Coach
