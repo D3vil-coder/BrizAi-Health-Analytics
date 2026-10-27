@@ -177,7 +177,6 @@ Keep it concise, actionable, and friendly. Use emojis sparingly.`;
         }
         setIsSyncing(true);
         try {
-            console.log('[Sync] Starting with token:', googleFitToken?.substring(0, 20) + '...');
             const { googleFitService } = await import('../../services/googleFitService');
 
             // Always sync at least from start of today, or 3 days ago if never synced
@@ -193,7 +192,6 @@ Keep it concise, actionable, and friendly. Use emojis sparingly.`;
 
             const data = await googleFitService.fetchData(googleFitToken, startTime, endTime);
 
-            console.log('[Sync] Raw API response:', JSON.stringify(data, null, 2));
 
             // Map the daily buckets
             const stepBuckets = data.steps || [];
@@ -202,7 +200,7 @@ Keep it concise, actionable, and friendly. Use emojis sparingly.`;
             console.log('[Sync] Sleep sessions:', data.sleep?.length || 0);
 
             if (stepBuckets.length === 0) {
-                alert('No step data found. Check console for raw API response.');
+                alert('No step data found. Check the sync settings and connection.');
                 setIsSyncing(false);
                 return;
             }
@@ -232,7 +230,6 @@ Keep it concise, actionable, and friendly. Use emojis sparingly.`;
                     }
                 }
 
-                console.log('[Sync] Importing for', dateKey, ':', mappedData);
                 importHealthData(dateKey, mappedData);
             });
 
@@ -559,3 +556,5 @@ Keep it concise, actionable, and friendly. Use emojis sparingly.`;
 };
 
 export default Dashboard;
+
+

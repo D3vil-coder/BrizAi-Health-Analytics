@@ -14,8 +14,8 @@ BrizAi is a React and Vite prototype for recording wellness information and expe
 ## Known privacy and security issues
 
 - The profile, including the Gemini API key and Google Fit client ID, is stored in `localStorage`; the Fit access token is also stored there. Browser storage is accessible to JavaScript running in the same origin and is not a protected credential vault.
-- The fitness, sleep, nutrition and water analysis functions pass the full profile into a JSON-formatted model prompt. Since that profile can contain the Gemini API key and Fit client ID, these values can be sent as prompt content to the selected AI endpoint. Do not use these analysis functions with credentials until this is fixed and verified.
-- The current sync code logs a prefix of the Fit access token and health-related responses to the developer console. Avoid using real tokens and data. Remove sensitive logging and review error handling before any deployment.
+- The fitness, sleep, nutrition and water analysis prompts now use an allowlist of profile fields rather than the full settings object. Unit and mock-provider tests cover the previously identified credential exposure path, but this is not a comprehensive security review. Other user-entered prompt content can still contain sensitive information.
+- The direct Fit access-token prefix, raw API response and imported-record debug logs have been removed. The application still logs errors and status information; review those paths before deployment.
 - Gemini requests send the supplied prompt and context to Google's service. An Ollama URL is configurable and may point to a remote service. Local browser storage alone is not evidence that data never leaves the device.
 
 ## Project structure
@@ -39,6 +39,14 @@ npm run dev
 ```
 
 `npm run build` and `npm run lint` are also defined in `package.json`. The Google Fit proxy is configured under Vite's development server; a production deployment needs its own carefully reviewed integration. The repository does not currently contain a `LICENSE` file.
+
+To run the credential-redaction tests with Node.js:
+
+```bash
+node --experimental-vm-modules --test tests/analysisContext.test.js tests/analysisPrompt.integration.test.js
+```
+
+The provider tests use mocks and make no real API calls. They do not establish that a full browser session, OAuth flow or deployment is secure.
 
 ## Status
 
