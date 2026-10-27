@@ -66,7 +66,6 @@ export const googleFitService = {
                 if (response.ok) {
                     const data = await response.json();
                     results[dataType.type] = data.bucket;
-                    console.log(`[Fit] ${dataType.type}:`, data.bucket);
                 } else {
                     console.warn(`Failed to fetch ${dataType.type}:`, response.status, await response.text());
                 }
@@ -89,3 +88,5 @@ export const googleFitService = {
         }
     }
 };
+
+

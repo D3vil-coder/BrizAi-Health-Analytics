@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { sanitizeAnalysisData } from './analysisContext.js';
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 1000;
@@ -193,7 +194,7 @@ export const analyzeSection = async (section, data, config) => {
     const prompt = `
     Analyze the following ${section} data and provide extensive, scientifically-backed health insights and suggestions based on current medical and nutritional research.
     
-    Data: ${JSON.stringify(data)}
+    Data: ${JSON.stringify(sanitizeAnalysisData(data))}
     
     Requirements:
     1. Use a professional, encouraging, yet scientifically accurate tone.
@@ -205,3 +206,5 @@ export const analyzeSection = async (section, data, config) => {
     `;
     return generateAIResponse(prompt, "You are an advanced personal health assistant with access to extensive medical and nutritional databases.", config);
 };
+
+
